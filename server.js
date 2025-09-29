@@ -52,10 +52,26 @@ const authLimiter = rateLimit({
 // CORS configuration
 app.use(
   cors({
-    origin:
-      process.env.NODE_ENV === "production"
-        ? ["https://cde-3f4l5bq7g-faith-catherines-projects.vercel.app"]
-        : ["http://localhost:3000", "http://localhost:3001"],
+    origin: function (origin, callback) {
+      // Allow requests with no origin (like mobile apps or curl requests)
+      if (!origin) return callback(null, true);
+      
+      if (process.env.NODE_ENV === "production") {
+        // Allow any Vercel app from your account
+        if (origin.includes("faith-catherines-projects.vercel.app") || 
+            origin.includes("vercel.app")) {
+          return callback(null, true);
+        }
+        return callback(new Error('Not allowed by CORS'));
+      } else {
+        // Development origins
+        const allowedOrigins = ["http://localhost:3000", "http://localhost:3001"];
+        if (allowedOrigins.includes(origin)) {
+          return callback(null, true);
+        }
+        return callback(new Error('Not allowed by CORS'));
+      }
+    },
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
     credentials: true,
