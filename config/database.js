@@ -23,7 +23,9 @@ if (usePostgreSQL) {
 
     // Test the connection
     pool.on("connect", () => {
-      console.log("Connected to PostgreSQL database");
+      if (process.env.NODE_ENV !== "production") {
+        console.log("Connected to PostgreSQL database");
+      }
     });
 
     pool.on("error", (err) => {
@@ -36,7 +38,9 @@ if (usePostgreSQL) {
       query: (text, params) => pool.query(text, params),
     };
   } catch (error) {
-    console.log("PostgreSQL not available, falling back to SQLite");
+    if (process.env.NODE_ENV !== "production") {
+      console.log("PostgreSQL not available, falling back to SQLite");
+    }
     db = null;
   }
 }
@@ -58,7 +62,7 @@ if (!db) {
   const sqliteDb = new sqlite3.Database(dbPath, (err) => {
     if (err) {
       console.error("SQLite connection error:", err);
-    } else {
+    } else if (process.env.NODE_ENV !== "production") {
       console.log("Connected to SQLite database");
     }
   });

@@ -54,7 +54,7 @@ app.use(
   cors({
     origin:
       process.env.NODE_ENV === "production"
-        ? ["https://yourdomain.com"] // Replace with your production domain
+        ? ["https://cde-3f4l5bq7g-faith-catherines-projects.vercel.app"]
         : ["http://localhost:3000", "http://localhost:3001"],
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
@@ -114,19 +114,7 @@ async function startServer() {
     await initializeDatabase();
 
     app.listen(PORT, () => {
-      console.log(`🚀 Server running on port ${PORT}`);
-      console.log(`📊 Environment: ${process.env.NODE_ENV || "development"}`);
-      console.log(`🔗 API Base URL: http://localhost:${PORT}/api`);
-      console.log(`🏥 Health Check: http://localhost:${PORT}/health`);
-      console.log(`\n📋 Available Endpoints:`);
-      console.log(`  POST /api/auth/login`);
-      console.log(`  GET  /api/auth/me`);
-      console.log(`  GET  /api/events`);
-      console.log(`  POST /api/events (admin only)`);
-      console.log(`  GET  /api/events/stats`);
-      console.log(`\n👤 Default Users:`);
-      console.log(`  Admin: username=admin, password=admin123`);
-      console.log(`  User:  username=user, password=user123`);
+      console.log(`🚀 Server running on port ${PORT} (${process.env.NODE_ENV || "development"})`);
     });
   } catch (error) {
     console.error("Failed to start server:", error);

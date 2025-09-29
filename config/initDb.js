@@ -218,12 +218,14 @@ async function initializeDatabase() {
       }
     }
 
-    console.log(
-      `Database initialized successfully using ${db.type.toUpperCase()}`
-    );
-    console.log("Default users created:");
-    console.log("  Admin: username=admin, password=admin123");
-    console.log("  User: username=user, password=user123");
+    if (process.env.NODE_ENV !== "production") {
+      console.log(
+        `Database initialized successfully using ${db.type.toUpperCase()}`
+      );
+      console.log("Default users created:");
+      console.log("  Admin: username=admin, password=admin123");
+      console.log("  User: username=user, password=user123");
+    }
   } catch (error) {
     console.error("Database initialization error:", error);
     throw error;
